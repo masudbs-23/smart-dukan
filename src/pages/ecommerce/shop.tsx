@@ -64,7 +64,7 @@ export default function ShopPage() {
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let filtered = PRODUCTS.filter((product) => {
+    const filtered = PRODUCTS.filter((product) => {
       // Search filter
       if (search) {
         const searchLower = search.toLowerCase();
@@ -103,10 +103,18 @@ export default function ShopPage() {
     // Sort products
     switch (sortBy) {
       case 'latest':
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        filtered.sort((a, b) => {
+          const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return bTime - aTime;
+        });
         break;
       case 'oldest':
-        filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        filtered.sort((a, b) => {
+          const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return aTime - bTime;
+        });
         break;
       case 'popular':
         filtered.sort((a, b) => b.reviewCount - a.reviewCount);

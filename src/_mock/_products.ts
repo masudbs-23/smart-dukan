@@ -21,6 +21,8 @@ export interface Product {
   isFeatured?: boolean;
   isBestDeal?: boolean;
   isNew?: boolean;
+  // Optional timestamp for sorting by recency
+  createdAt?: string;
 }
 
 export interface ProductColor {
