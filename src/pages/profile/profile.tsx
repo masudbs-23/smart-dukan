@@ -6,6 +6,15 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Checkbox from '@mui/material/Checkbox';
+import Chip from '@mui/material/Chip';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -130,6 +139,38 @@ export default function ProfileView() {
     return true; // For mock, All/Latest/Popular show all
   });
 
+  // Orders mock and UI state
+  type OrderRow = {
+    id: string;
+    item: string;
+    deliveryDate: string;
+    price: string;
+    status: 'Completed' | 'To process' | 'Cancelled' | 'Return';
+  };
+
+  const ORDER_ROWS: OrderRow[] = [
+    { id: '#0111201', item: 'Apple iPhone', deliveryDate: '16 Oct 2025', price: '$83.74', status: 'Completed' },
+    { id: '#01112010', item: 'Bose QuietComfort', deliveryDate: '07 Oct 2025', price: '$53.37', status: 'Completed' },
+    { id: '#01112011', item: 'Canon EOS', deliveryDate: '06 Oct 2025', price: '$72.75', status: 'Completed' },
+    { id: '#01112012', item: 'HP Spectre', deliveryDate: '05 Oct 2025', price: '$56.61', status: 'Completed' },
+    { id: '#0111202', item: 'Samsung Galaxy', deliveryDate: '15 Oct 2025', price: '$97.14', status: 'To process' },
+    { id: '#0111203', item: 'Nike Air Max', deliveryDate: '14 Oct 2025', price: '$68.71', status: 'Cancelled' },
+    { id: '#0111204', item: 'Adidas Ultraboost', deliveryDate: '13 Oct 2025', price: '$85.21', status: 'Return' },
+    { id: '#0111205', item: 'Sony PlayStation', deliveryDate: '12 Oct 2025', price: '$52.17', status: 'Completed' },
+  ];
+
+  const orderTabs = ['All', 'Completed', 'To process', 'Cancelled', 'Return & refund'] as const;
+  type OrderTab = typeof orderTabs[number];
+  const [orderTab, setOrderTab] = useState<OrderTab>('All');
+
+  const filteredOrders = ORDER_ROWS.filter(r => {
+    if (orderTab === 'All' || orderTab === 'Return & refund') return true; // mock behavior
+    if (orderTab === 'To process') return r.status === 'To process';
+    if (orderTab === 'Completed') return r.status === 'Completed';
+    if (orderTab === 'Cancelled') return r.status === 'Cancelled';
+    return true;
+  });
+
   const navigationItems = [
     { id: 'personal', label: 'Personal' },
     { id: 'wishlist', label: 'Wishlist' },
@@ -145,7 +186,7 @@ export default function ProfileView() {
   return (
     <Box sx={{ 
       minHeight: '100vh', 
-      backgroundColor: '#f8f9fa',
+      backgroundColor: '#ffff',
       p: 3 
     }}>
       <Box sx={{ 
@@ -183,7 +224,7 @@ export default function ProfileView() {
         </Box>
 
         {/* Tabs Row - plain text with bottom border for active */}
-        <Box sx={{ mb: 3, borderBottom: '1px solid #e5e7eb' }}>
+        <Box sx={{ mb: 3,  }}>
           <Box sx={{ display: 'flex', gap: 2 }}>
             {navigationItems.map((item) => {
               const isActive = activeTab === item.id;
@@ -197,7 +238,7 @@ export default function ProfileView() {
                     color: isActive ? '#111827' : '#6b7280',
                     fontWeight: isActive ? 600 : 500,
                     py: 1.25,
-                    borderBottom: isActive ? '2px solid #111827' : '2px solid transparent',
+                    borderBottom: isActive ? '2px solid #111827' : 'none',
                   }}
                 >
                   {item.label}
@@ -210,9 +251,8 @@ export default function ProfileView() {
         {/* Content */}
         <Box sx={{ 
           backgroundColor: 'white',
-          borderRadius: 2,
           p: 4,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          
         }}>
           <Typography variant="h4" sx={{ 
             mb: 4, 
@@ -580,7 +620,7 @@ export default function ProfileView() {
                           color: isActive ? '#111827' : '#6b7280',
                           fontWeight: isActive ? 600 : 500,
                           py: 1,
-                          borderBottom: isActive ? '2px solid #111827' : '2px solid transparent',
+                          borderBottom: isActive ? '2px solid #111827' : 'none',
                         }}
                       >
                         {tab}
@@ -651,8 +691,141 @@ export default function ProfileView() {
           )}
 
           {activeTab === 'orders' && (
-            <Box sx={{ color: '#374151' }}>
-              <Typography variant="body1">Your orders will appear here.</Typography>
+            <Box>
+              
+              <Box sx={{ mb: 2,}}>
+                <Box sx={{ display: 'flex', gap: 3 }}>
+                  {orderTabs.map(tab => {
+                    const isActive = orderTab === tab;
+                    return (
+                      <Box
+                        key={tab}
+                        role="button"
+                        onClick={() => setOrderTab(tab)}
+                        sx={{
+                          cursor: 'pointer',
+                          color: isActive ? '#111827' : '#6b7280',
+                          fontWeight: isActive ? 600 : 500,
+                          py: 1,
+                          borderBottom: isActive ? '2px solid #111827' : 'none',
+                        }}
+                      >
+                        {tab}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+
+              {/* Filters row */}
+              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 2, mb: 2 }}>
+                <TextField
+                  placeholder="Search..."
+                  size="small"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Icon icon="lucide:search" width={18} height={18} style={{ color: '#9ca3af' }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: '#f9fafb',
+                      '& fieldset': { borderColor: '#e5e7eb' },
+                      '&:hover fieldset': { borderColor: '#d1d5db' },
+                      '&.Mui-focused fieldset': { borderColor: '#111827' },
+                    },
+                  }}
+                />
+                <TextField
+                  placeholder="Start date"
+                  size="small"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Icon icon="lucide:calendar" width={18} height={18} style={{ color: '#9ca3af' }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: '#f9fafb',
+                      '& fieldset': { borderColor: '#e5e7eb' },
+                      '&:hover fieldset': { borderColor: '#d1d5db' },
+                      '&.Mui-focused fieldset': { borderColor: '#111827' },
+                    },
+                  }}
+                />
+                <TextField
+                  placeholder="End date"
+                  size="small"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Icon icon="lucide:calendar" width={18} height={18} style={{ color: '#9ca3af' }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: '#f9fafb',
+                      '& fieldset': { borderColor: '#e5e7eb' },
+                      '&:hover fieldset': { borderColor: '#d1d5db' },
+                      '&.Mui-focused fieldset': { borderColor: '#111827' },
+                    },
+                  }}
+                />
+              </Box>
+
+              {/* Table */}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox">
+                      <Checkbox size="small" />
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: '#111827' }}>Order ID</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: '#111827' }}>Item</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: '#111827' }}>Delivery date</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: '#111827' }}>Price</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: '#111827' }}>Status</TableCell>
+                    <TableCell align="right" sx={{ width: 48 }} />
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredOrders.map(row => (
+                    <TableRow key={row.id} hover>
+                      <TableCell padding="checkbox">
+                        <Checkbox size="small" />
+                      </TableCell>
+                      <TableCell sx={{ color: '#111827' }}>{row.id}</TableCell>
+                      <TableCell sx={{ color: '#111827' }}>{row.item}</TableCell>
+                      <TableCell sx={{ color: '#111827' }}>{row.deliveryDate}</TableCell>
+                      <TableCell sx={{ color: '#111827' }}>{row.price}</TableCell>
+                      <TableCell>
+                        {row.status === 'Completed' && (
+                          <Chip label="Completed" size="small" sx={{ backgroundColor: '#d1fae5', color: '#065f46', fontWeight: 600 }} />
+                        )}
+                        {row.status === 'To process' && (
+                          <Chip label="To process" size="small" sx={{ backgroundColor: '#fde68a', color: '#92400e', fontWeight: 600 }} />
+                        )}
+                        {row.status === 'Cancelled' && (
+                          <Chip label="Cancelled" size="small" sx={{ backgroundColor: '#fecaca', color: '#991b1b', fontWeight: 600 }} />
+                        )}
+                        {row.status === 'Return' && (
+                          <Chip label="Return" size="small" sx={{ backgroundColor: '#e0e7ff', color: '#1e40af', fontWeight: 600 }} />
+                        )}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton size="small">
+                          <Icon icon="lucide:more-vertical" width={16} height={16} />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </Box>
           )}
 
