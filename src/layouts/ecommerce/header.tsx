@@ -15,6 +15,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Slide from '@mui/material/Slide';
+import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material/styles';
 
 import { useRouter } from 'src/routes/hooks';
@@ -41,6 +43,7 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
   const { items: compareItems } = useCompare();
   const [searchQuery, setSearchQuery] = useState('');
   const [accountMenuAnchor, setAccountMenuAnchor] = useState<null | HTMLElement>(null);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,14 +60,27 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
     setAccountMenuAnchor(null);
   };
 
+  const handleMobileSearchToggle = () => {
+    setMobileSearchOpen(!mobileSearchOpen);
+  };
+
+  const handleMobileSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchQuery)}`);
+      setMobileSearchOpen(false);
+    }
+  };
+
   return (
     <AppBar
       position="sticky"
       sx={{
-        bgcolor: 'background.paper',
+        bgcolor: 'transparent',
         color: 'text.primary',
-        boxShadow: theme.shadows[1],
+        boxShadow: 'none',
         borderBottom: 'none',
+        backdropFilter: 'blur(8px)',
         ...sx,
       }}
     >
@@ -137,7 +153,7 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
             {/* Actions */}
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               {/* Mobile Search */}
-              <IconButton sx={{ display: { md: 'none' } }} onClick={() => router.push('/shop')}>
+              <IconButton sx={{ display: { md: 'none' } }} onClick={handleMobileSearchToggle}>
                 <Icon icon="solar:magnifer-linear" width={24} />
               </IconButton>
 
@@ -151,7 +167,7 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
               {/* Wishlist */}
               <IconButton onClick={() => router.push('/wishlist')}>
                 <Badge badgeContent={wishlistItems.length} color="error">
-                  <Icon icon="solar:heart-bold" width={24} />
+                  <Icon icon="solar:heart-linear" width={24} />
                 </Badge>
               </IconButton>
 
@@ -170,6 +186,67 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
           </Box>
         </Container>
       </Toolbar>
+
+      {/* Mobile Search Dropdown */}
+      <Slide direction="down" in={mobileSearchOpen} mountOnEnter unmountOnExit>
+        <Paper
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1300,
+            p: 2,
+            bgcolor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(8px)',
+            borderBottom: 'none',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <Container maxWidth="xl">
+            <Box
+              component="form"
+              onSubmit={handleMobileSearch}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  bgcolor: 'action.hover',
+                  borderRadius: 1,
+                  px: 2,
+                  py: 0.5,
+                }}
+              >
+                <InputBase
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  sx={{ flex: 1 }}
+                  autoFocus
+                  startAdornment={
+                    <Box sx={{ mr: 1, color: '#666', display: 'flex', alignItems: 'center' }}>
+                      <Icon icon="solar:magnifer-linear" width={20} />
+                    </Box>
+                  }
+                />
+              </Box>
+              <IconButton 
+                onClick={handleMobileSearchToggle}
+                
+              >
+                <Icon icon="solar:close-square-bold-duotone" width={34} />
+              </IconButton>
+            </Box>
+          </Container>
+        </Paper>
+      </Slide>
 
       {/* Account Dropdown Menu */}
       <Menu

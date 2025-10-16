@@ -42,7 +42,7 @@ export default function WishlistPage() {
             borderRadius: 2,
           }}
         >
-          <Iconify icon="lucide:heart" width={80} sx={{ mb: 3, color: 'text.disabled' }} />
+          <Iconify icon="solar:heart-linear" width={80} sx={{ mb: 3, color: 'text.disabled' }} />
           <Typography variant="h4" sx={{ mb: 2 }}>
             Your wishlist is empty
           </Typography>

@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 
-import { Logo } from './logo';
-
 // ----------------------------------------------------------------------
 
 type PreloaderProps = {
@@ -43,10 +41,14 @@ export function Preloader({ isLoading = true, onComplete }: PreloaderProps) {
         backgroundColor: 'background.default',
       }}
     >
-      <Logo
+      <Box
+        component="img"
+        src="/logo.png"
+        alt="SmartDokan Logo"
         sx={{
           width: 80,
           height: 80,
+          objectFit: 'contain',
           animation: 'logoSpin 2s linear infinite',
           '@keyframes logoSpin': {
             '0%': {

@@ -271,18 +271,20 @@ function HeroSection() {
     <Box
       sx={{
         position: 'relative',
-        height: { xs: 650, md: 800 },
+        height: { xs: '100vh', sm: 700, md: 800 },
+        minHeight: { xs: 600, sm: 700 },
         background: 'linear-gradient(135deg, #8B0000 0%, #000000 50%, #2C2C2C 100%)',
         overflow: 'hidden',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        px: { xs: 2, sm: 3 }
       }}
     >
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={4} alignItems="center">
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, py: { xs: 2, md: 0 } }}>
+        <Grid container spacing={{ xs: 2, md: 4 }} alignItems="center">
           {/* Left Section - Content */}
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box sx={{ maxWidth: 500 }}>
+          <Grid size={{ xs: 12, md: 6 }} sx={{ order: { xs: 2, md: 1 } }}>
+            <Box sx={{ maxWidth: { xs: '100%', md: 500 }, textAlign: { xs: 'center', md: 'left' } }}>
               {/* Discount Tag */}
               <Chip 
                 label={currentHero.discountTag}
@@ -290,10 +292,12 @@ function HeroSection() {
                   bgcolor: '#FF6B35',
                   color: 'white',
                   fontWeight: 600,
-                  mb: 3,
-                  px: 2,
+                  mb: { xs: 2, md: 3 },
+                  px: { xs: 1.5, md: 2 },
                   py: 1,
-                  fontSize: '0.9rem'
+                  fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                  width: { xs: 'fit-content', md: 'auto' },
+                  mx: { xs: 'auto', md: 0 }
                 }}
               />
 
@@ -301,11 +305,12 @@ function HeroSection() {
               <Typography 
                 variant="h1" 
                 sx={{ 
-                  mb: 3, 
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  mb: { xs: 2, md: 3 }, 
+                  fontSize: { xs: '1.8rem', sm: '2.2rem', md: '3rem', lg: '3.5rem' },
                   fontWeight: 700,
                   color: 'white',
-                  lineHeight: 1.2
+                  lineHeight: { xs: 1.1, md: 1.2 },
+                  textAlign: { xs: 'center', md: 'left' }
                 }}
               >
                 {currentHero.title}
@@ -315,10 +320,12 @@ function HeroSection() {
               <Typography 
                 variant="h6" 
                 sx={{ 
-                  mb: 4, 
+                  mb: { xs: 3, md: 4 }, 
                   color: '#B0B0B0',
                   lineHeight: 1.6,
-                  fontSize: '1.1rem'
+                  fontSize: { xs: '0.95rem', sm: '1rem', md: '1.1rem' },
+                  textAlign: { xs: 'center', md: 'left' },
+                  px: { xs: 1, md: 0 }
                 }}
               >
                 {currentHero.description}
@@ -333,10 +340,14 @@ function HeroSection() {
                   bgcolor: '#FF6B35',
                   color: 'white',
                   fontWeight: 600,
-                  px: 4,
-                  py: 1.5,
+                  px: { xs: 3, md: 4 },
+                  py: { xs: 1.2, md: 1.5 },
                   borderRadius: 2,
-                  fontSize: '1.1rem',
+                  fontSize: { xs: '1rem', md: '1.1rem' },
+                  width: { xs: '100%', sm: 'auto' },
+                  maxWidth: { xs: 280, sm: 'none' },
+                  mx: { xs: 'auto', md: 0 },
+                  mb: { xs: 1, md: 0 },
                   '&:hover': {
                     bgcolor: '#E55A2B'
                   }
@@ -349,18 +360,19 @@ function HeroSection() {
           </Grid>
 
           {/* Right Section - Product Image */}
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box sx={{ textAlign: 'center' }}>
+          <Grid size={{ xs: 12, md: 6 }} sx={{ order: { xs: 1, md: 2 } }}>
+            <Box sx={{ textAlign: 'center', mb: { xs: 1, md: 0 } }}>
               <Box
                 component="img"
                 src={currentHero.productImage}
                 alt={currentHero.title}
                 sx={{
                   width: '100%',
-                  maxWidth: 400,
-                  height: { xs: 300, md: 400 },
+                  maxWidth: { xs: 280, sm: 350, md: 400 },
+                  height: { xs: 250, sm: 320, md: 400 },
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))'
+                  filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))',
+                  mx: 'auto'
                 }}
               />
             </Box>
@@ -368,11 +380,11 @@ function HeroSection() {
         </Grid>
       </Container>
 
-      {/* Carousel Indicators - Bottom Left */}
+      {/* Carousel Indicators - Bottom Center */}
       <Box
         sx={{
           position: 'absolute',
-          bottom: 20,
+          bottom: { xs: 15, md: 20 },
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
@@ -385,8 +397,8 @@ function HeroSection() {
             key={index}
             onClick={() => handleSlideChange(index)}
             sx={{
-              width: 12,
-              height: 12,
+              width: { xs: 10, md: 12 },
+              height: { xs: 10, md: 12 },
               borderRadius: '50%',
               bgcolor: index === currentSlide ? '#FF6B35' : '#404040',
               cursor: 'pointer',
@@ -403,9 +415,9 @@ function HeroSection() {
       <Box
         sx={{
           position: 'absolute',
-          bottom: 20,
-          right: 40,
-          display: 'flex',
+          bottom: { xs: 15, md: 20 },
+          right: { xs: 20, md: 40 },
+          display: { xs: 'none', sm: 'flex' },
           gap: 1,
           zIndex: 2
         }}
