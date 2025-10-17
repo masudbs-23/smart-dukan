@@ -19,7 +19,7 @@ import { useRouter } from 'src/routes/hooks';
 import { useCompare } from 'src/contexts/CompareContext';
 import { useCart } from 'src/contexts/CartContext';
 
-import { Iconify } from 'src/components/lucide-icons';
+import { Icon } from '@iconify/react';
 import { fCurrency } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
@@ -43,7 +43,9 @@ export default function ComparePage() {
             borderRadius: 2,
           }}
         >
-          <Iconify icon="lucide:git-compare" width={80} sx={{ mb: 3, color: 'text.disabled' }} />
+          <Box sx={{ mb: 3, color: 'text.disabled', display: 'flex' }}>
+            <Icon icon="lucide:git-compare" width={80} />
+          </Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
             No products to compare
           </Typography>
@@ -81,7 +83,7 @@ export default function ComparePage() {
                         onClick={() => removeFromCompare(product.id)}
                         sx={{ position: 'absolute', top: -8, right: -8 }}
                       >
-                        <Iconify icon="lucide:x" />
+                        <Icon icon="lucide:x" />
                       </IconButton>
                       <Box
                         component="img"

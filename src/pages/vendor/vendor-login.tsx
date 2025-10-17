@@ -13,29 +13,55 @@ import { alpha } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 
 import { Logo } from 'src/components/logo';
-import { useAuth } from 'src/contexts/AuthContext';
 
 // ----------------------------------------------------------------------
 
-export default function SignInPage() {
+export default function VendorLoginPage() {
   const navigate = useNavigate();
-  const { login, error, clearError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    clearError();
+    setError(null);
 
     try {
-      await login(email, password);
-      navigate('/');
+      // Demo/Mock authentication for vendor portal
+      // Accept any vendor email without password check
+      const vendorEmails = ['john@example.com', 'sarah@example.com', 'test@test.com'];
+      
+      if (vendorEmails.includes(email.toLowerCase())) {
+        // Mock login - store vendor credentials
+        const mockUser = {
+          id: email,
+          email: email,
+          name: email === 'john@example.com' ? 'John Doe' : 
+                email === 'sarah@example.com' ? 'Sarah Ahmed' : 'Demo Vendor',
+          role: 'vendor',
+        };
+        
+        const mockToken = `mock-token-${Date.now()}`;
+        
+        // Store in localStorage (same as AuthContext)
+        localStorage.setItem('authToken', mockToken);
+        localStorage.setItem('userData', JSON.stringify(mockUser));
+        
+        // Wait a bit to simulate API call
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Redirect to vendor dashboard
+        navigate('/vendor/dashboard');
+        window.location.reload(); // Reload to trigger context updates
+      } else {
+        setError('Invalid vendor email. Please use john@example.com, sarah@example.com, or test@test.com');
+        setLoading(false);
+      }
     } catch (err) {
-      console.error('Login failed:', err);
-    } finally {
+      setError(err instanceof Error ? err.message : 'Login failed');
       setLoading(false);
     }
   };
@@ -66,10 +92,10 @@ export default function SignInPage() {
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Logo sx={{ mb: 2 }} />
           <Typography variant="h4" sx={{ mb: 1 }}>
-            Welcome Back
+            Vendor Portal
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Sign in to your account
+            Sign in to manage your business
           </Typography>
         </Box>
 
@@ -135,23 +161,48 @@ export default function SignInPage() {
             variant="contained"
             loading={loading}
           >
-            Sign In
+            Sign In as Vendor
           </LoadingButton>
         </Stack>
 
         <Box sx={{ mt: 3, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
-            Don&apos;t have an account?{' '}
+            Not a vendor?{' '}
             <Box
               component="span"
               sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
-              onClick={() => navigate('/sign-up')}
+              onClick={() => navigate('/sign-in')}
             >
-              Sign Up
+              Customer Login
             </Box>
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            mt: 2,
+            pt: 2,
+            borderTop: (theme) => `1px dashed ${alpha(theme.palette.grey[500], 0.24)}`,
+          }}
+        >
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5, fontWeight: 600 }}>
+            Demo Vendor Accounts:
+          </Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+            • john@example.com (2 businesses)
+          </Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+            • sarah@example.com (2 businesses)
+          </Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+            • test@test.com (all access)
+          </Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+            Password: (any password)
           </Typography>
         </Box>
       </Card>
     </Box>
   );
 }
+

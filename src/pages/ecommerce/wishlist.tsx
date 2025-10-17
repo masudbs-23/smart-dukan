@@ -18,7 +18,7 @@ import { useRouter } from 'src/routes/hooks';
 import { useWishlist } from 'src/contexts/WishlistContext';
 import { useCart } from 'src/contexts/CartContext';
 
-import { Iconify } from 'src/components/lucide-icons';
+import { Icon } from '@iconify/react';
 import { fCurrency } from 'src/utils/format-number';
 import type { Product } from 'src/_mock/_products';
 
@@ -42,7 +42,9 @@ export default function WishlistPage() {
             borderRadius: 2,
           }}
         >
-          <Iconify icon="solar:heart-linear" width={80} sx={{ mb: 3, color: 'text.disabled' }} />
+          <Box sx={{ mb: 3, color: 'text.disabled', display: 'flex' }}>
+            <Icon icon="solar:heart-linear" width={80} />
+          </Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Your wishlist is empty
           </Typography>
@@ -125,7 +127,9 @@ function WishlistProductCard({ product, onRemove }: WishlistProductCardProps) {
           '&:hover': { bgcolor: 'background.paper' },
         }}
       >
-        <Iconify icon="lucide:x" sx={{ color: 'error.main' }} />
+        <Box sx={{ color: 'error.main', display: 'flex' }}>
+          <Icon icon="lucide:x" />
+        </Box>
       </IconButton>
 
       <CardActionArea onClick={() => router.push(`/product/${product.id}`)}>
@@ -179,7 +183,7 @@ function WishlistProductCard({ product, onRemove }: WishlistProductCardProps) {
         <Button
           fullWidth
           variant="contained"
-          startIcon={<Iconify icon="solar:bag-5-outline" />}
+          startIcon={<Icon icon="solar:bag-5-outline" />}
           onClick={handleAddToCart}
           disabled={!product.inStock}
         >

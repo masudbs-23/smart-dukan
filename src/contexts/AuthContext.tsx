@@ -2,13 +2,24 @@ import type { ReactNode} from 'react';
 
 import { useEffect, useContext, useReducer, createContext } from 'react';
 
-import type { AuthResponse } from '../api/types';
+// ----------------------------------------------------------------------
 
 interface User {
   id: string;
   email: string;
   name?: string;
   role?: string;
+}
+
+interface AuthResponse {
+  message: string;
+  token?: string;
+  role?: string;
+  user?: {
+    id: string;
+    email: string;
+    name?: string;
+  };
 }
 
 interface AuthState {
@@ -275,6 +286,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
+    localStorage.removeItem('selectedBusinessId');
     dispatch({ type: 'LOGOUT' });
   };
 

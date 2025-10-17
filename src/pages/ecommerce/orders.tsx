@@ -14,7 +14,7 @@ import { useRouter } from 'src/routes/hooks';
 import { getUserOrders, ORDER_STATUS_LABELS } from 'src/_mock/_orders';
 import type { OrderStatus } from 'src/_mock/_orders';
 
-import { Iconify } from 'src/components/lucide-icons';
+import { Icon } from '@iconify/react';
 import { fCurrency } from 'src/utils/format-number';
 import { fDate } from 'src/utils/format-time';
 
@@ -49,7 +49,9 @@ export default function OrdersPage() {
             borderRadius: 2,
           }}
         >
-          <Iconify icon="lucide:package" width={80} sx={{ mb: 3, color: 'text.disabled' }} />
+          <Box sx={{ mb: 3, color: 'text.disabled', display: 'flex' }}>
+            <Icon icon="lucide:package" width={80} />
+          </Box>
           <Typography variant="h4" sx={{ mb: 2 }}>
             No orders yet
           </Typography>
@@ -68,7 +70,7 @@ export default function OrdersPage() {
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3">My Orders</Typography>
-        <Button startIcon={<Iconify icon="lucide:arrow-left" />} onClick={() => router.push('/account')}>
+        <Button startIcon={<Icon icon="lucide:arrow-left" />} onClick={() => router.push('/account')}>
           Back to Account
         </Button>
       </Box>

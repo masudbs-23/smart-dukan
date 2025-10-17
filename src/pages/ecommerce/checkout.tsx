@@ -24,7 +24,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useCart } from 'src/contexts/CartContext';
 
-import { Iconify } from 'src/components/lucide-icons';
+import { Icon } from '@iconify/react';
 import { fCurrency } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
@@ -258,7 +258,7 @@ function PaymentMethodForm({ paymentMethod, setPaymentMethod }: PaymentMethodFor
                 control={<Radio />}
                 label={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Iconify icon="lucide:credit-card" />
+                    <Icon icon="lucide:credit-card" />
                     <Typography>Credit / Debit Card</Typography>
                   </Box>
                 }
@@ -291,7 +291,7 @@ function PaymentMethodForm({ paymentMethod, setPaymentMethod }: PaymentMethodFor
                 control={<Radio />}
                 label={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Iconify icon="lucide:wallet" />
+                    <Icon icon="lucide:wallet" />
                     <Typography>PayPal</Typography>
                   </Box>
                 }
@@ -306,7 +306,7 @@ function PaymentMethodForm({ paymentMethod, setPaymentMethod }: PaymentMethodFor
                 control={<Radio />}
                 label={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Iconify icon="lucide:banknote" />
+                    <Icon icon="lucide:banknote" />
                     <Typography>Cash on Delivery</Typography>
                   </Box>
                 }

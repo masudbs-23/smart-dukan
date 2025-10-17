@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 
-import { LucideIcon } from './lucide-icons';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 
@@ -88,10 +88,10 @@ export function SnackbarProvider({ children }: { children: React.ReactNode }) {
               size="small"
               onClick={handleClose}
             >
-              <LucideIcon icon="solar:close-bold" />
+              <Icon icon="solar:close-bold" width={20} />
             </IconButton>
           }
-          icon={<LucideIcon icon={getIcon(type)} />}
+          icon={<Icon icon={getIcon(type)} width={24} />}
         >
           {message}
         </Alert>

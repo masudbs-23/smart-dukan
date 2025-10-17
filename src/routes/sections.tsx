@@ -8,6 +8,8 @@ import Box from '@mui/material/Box';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 
 import { EcommerceLayout } from 'src/layouts/ecommerce';
+import VendorLayout from 'src/layouts/vendor/vendor-layout';
+import { ProtectedVendorRoute } from 'src/components/protected-vendor-route';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +27,19 @@ export const OrderDetailsPage = lazy(() => import('src/pages/ecommerce/order-det
 
 // Profile Page
 export const ProfilePage = lazy(() => import('src/pages/profile/profile'));
+
+// Vendor Pages
+export const VendorLoginPage = lazy(() => import('src/pages/vendor/vendor-login'));
+export const VendorDashboardPage = lazy(() => import('src/pages/vendor/vendor-dashboard'));
+export const BusinessSettingsPage = lazy(() => import('src/pages/vendor/business-settings'));
+export const ProductsManagementPage = lazy(() => import('src/pages/vendor/products-management'));
+
+// Auth Pages
+export const SignInPage = lazy(() => import('src/pages/auth/sign-in'));
+export const SignUpPage = lazy(() => import('src/pages/auth/sign-up'));
+export const VerifyOtpPage = lazy(() => import('src/pages/auth/verify-otp'));
+
+// Error Page
 export const Page404 = lazy(() => import('src/pages/error/page-not-found'));
 
 const renderFallback = () => (
@@ -48,6 +63,7 @@ const renderFallback = () => (
 );
 
 export const routesSection: RouteObject[] = [
+  // Customer Frontend Routes
   {
     path: '/',
     element: (
@@ -71,6 +87,58 @@ export const routesSection: RouteObject[] = [
       { path: 'profile', element: <ProfilePage /> },
     ],
   },
+  
+  // Auth Routes
+  {
+    path: '/sign-in',
+    element: (
+      <Suspense fallback={renderFallback()}>
+        <SignInPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/sign-up',
+    element: (
+      <Suspense fallback={renderFallback()}>
+        <SignUpPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/verify-otp',
+    element: (
+      <Suspense fallback={renderFallback()}>
+        <VerifyOtpPage />
+      </Suspense>
+    ),
+  },
+
+  // Vendor Portal Routes
+  {
+    path: '/vendor/login',
+    element: (
+      <Suspense fallback={renderFallback()}>
+        <VendorLoginPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/vendor',
+    element: (
+      <ProtectedVendorRoute>
+        <VendorLayout />
+      </ProtectedVendorRoute>
+    ),
+    children: [
+      { path: 'dashboard', element: <VendorDashboardPage /> },
+      { path: 'products', element: <ProductsManagementPage /> },
+      { path: 'settings', element: <BusinessSettingsPage /> },
+      { path: 'orders', element: <VendorDashboardPage /> }, // Placeholder
+    ],
+  },
+  
+  // Error Routes
   {
     path: '404',
     element: <Page404 />,

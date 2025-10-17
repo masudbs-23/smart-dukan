@@ -24,7 +24,7 @@ import { useRouter } from 'src/routes/hooks';
 import { getOrderById, ORDER_STATUS_LABELS } from 'src/_mock/_orders';
 import type { OrderStatus } from 'src/_mock/_orders';
 
-import { Iconify } from 'src/components/lucide-icons';
+import { Icon } from '@iconify/react';
 import { fCurrency } from 'src/utils/format-number';
 import { fDate } from 'src/utils/format-time';
 
@@ -76,7 +76,7 @@ export default function OrderDetailsPage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h3">Order Details</Typography>
         <Button
-          startIcon={<Iconify icon="lucide:arrow-left" />}
+          startIcon={<Icon icon="lucide:arrow-left" />}
           onClick={() => router.push('/account/orders')}
         >
           Back to Orders

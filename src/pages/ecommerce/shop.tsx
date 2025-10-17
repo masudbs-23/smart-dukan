@@ -33,6 +33,7 @@ import type { Product } from 'src/_mock/_products';
 
 import { useCart } from 'src/contexts/CartContext';
 import { useWishlist } from 'src/contexts/WishlistContext';
+import { useBusiness } from 'src/contexts/BusinessContext';
 
 import { Icon } from '@iconify/react';
 import { fCurrency } from 'src/utils/format-number';
@@ -41,6 +42,7 @@ import { fCurrency } from 'src/utils/format-number';
 
 export default function ShopPage() {
   const [searchParams] = useSearchParams();
+  const { selectedBusiness } = useBusiness();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   
   // View mode state
@@ -65,6 +67,11 @@ export default function ShopPage() {
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     const filtered = PRODUCTS.filter((product) => {
+      // Filter by selected business
+      if (selectedBusiness && product.businessId !== selectedBusiness.id) {
+        return false;
+      }
+
       // Search filter
       if (search) {
         const searchLower = search.toLowerCase();
@@ -124,7 +131,7 @@ export default function ShopPage() {
     }
 
     return filtered;
-  }, [search, selectedCategories, selectedBrands, priceRange, inStockOnly, sortBy]);
+  }, [search, selectedCategories, selectedBrands, priceRange, inStockOnly, sortBy, selectedBusiness]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);

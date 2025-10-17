@@ -23,6 +23,8 @@ export interface Product {
   isNew?: boolean;
   // Optional timestamp for sorting by recency
   createdAt?: string;
+  // Business/Vendor ID
+  businessId?: string;
 }
 
 export interface ProductColor {
@@ -81,6 +83,7 @@ export const PRODUCTS: Product[] = [
     discount: 8,
     rating: 4.8,
     reviewCount: 2847,
+    businessId: 'business-1', // TechHub Electronics
     images: [
       '/assets/images/product/product-1.webp',
       '/assets/images/product/product-2.webp',
@@ -129,6 +132,7 @@ export const PRODUCTS: Product[] = [
     discount: 8,
     rating: 4.7,
     reviewCount: 1923,
+    businessId: 'business-1', // TechHub Electronics
     images: [
       '/assets/images/product/product-5.webp',
       '/assets/images/product/product-6.webp',
@@ -177,6 +181,7 @@ export const PRODUCTS: Product[] = [
     discount: 10,
     rating: 4.6,
     reviewCount: 1456,
+    businessId: 'business-2', // SmartHome Store
     images: [
       '/assets/images/product/product-9.webp',
       '/assets/images/product/product-10.webp',
@@ -222,6 +227,7 @@ export const PRODUCTS: Product[] = [
     price: 799,
     rating: 4.5,
     reviewCount: 987,
+    businessId: 'business-2', // SmartHome Store
     images: [
       '/assets/images/product/product-13.webp',
       '/assets/images/product/product-14.webp',
@@ -264,6 +270,7 @@ export const PRODUCTS: Product[] = [
     category: 'tablets',
     price: 1099,
     rating: 4.9,
+    businessId: 'business-3', // GadgetZone
     reviewCount: 1234,
     images: [
       '/assets/images/product/product-17.webp',
@@ -310,6 +317,7 @@ export const PRODUCTS: Product[] = [
     price: 399,
     rating: 4.7,
     reviewCount: 2156,
+    businessId: 'business-3', // GadgetZone
     images: [
       '/assets/images/product/product-21.webp',
       '/assets/images/product/product-22.webp',
@@ -360,6 +368,7 @@ export const PRODUCTS: Product[] = [
     discount: 11,
     rating: 4.8,
     reviewCount: 3421,
+    businessId: 'business-4', // AudioWorld
     images: [
       '/assets/images/product/product-1.webp',
       '/assets/images/product/product-2.webp',
@@ -402,6 +411,7 @@ export const PRODUCTS: Product[] = [
     discount: 22,
     rating: 4.5,
     reviewCount: 1876,
+    businessId: 'business-4', // AudioWorld
     images: [
       '/assets/images/product/product-4.webp',
       '/assets/images/product/product-5.webp',
@@ -571,3 +581,14 @@ export function filterProducts(filters: {
   });
 }
 
+// Helper function to get products by business
+export const getProductsByBusiness = (businessId: string): Product[] => 
+  PRODUCTS.filter((product) => product.businessId === businessId);
+
+// Helper function to get all products (with optional business filter)
+export const getAllProducts = (businessId?: string): Product[] => {
+  if (businessId) {
+    return getProductsByBusiness(businessId);
+  }
+  return PRODUCTS;
+};

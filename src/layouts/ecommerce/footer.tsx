@@ -10,10 +10,13 @@ import { alpha } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 
 import { Logo } from 'src/components/logo';
+import { useBusiness } from 'src/contexts/BusinessContext';
 
 // ----------------------------------------------------------------------
 
 export function Footer() {
+  const { selectedBusiness } = useBusiness();
+
   return (
     <Box
       component="footer"
@@ -40,7 +43,7 @@ export function Footer() {
           <Box>
             <Logo sx={{ mb: 2 }} />
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Your trusted source for the latest mobile gadgets and electronics.
+              {selectedBusiness?.description || 'Your trusted source for the latest mobile gadgets and electronics.'}
             </Typography>
             
             {/* Get in Touch Section */}
@@ -83,21 +86,31 @@ export function Footer() {
             {/* Social Icons */}
             <Box sx={{ mb: 3 }}>
               <Stack direction="row" spacing={1}>
-                <Link href="#" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
-                  <Icon icon="mdi:facebook" width={24} height={24} />
-                </Link>
-                <Link href="#" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
-                  <Icon icon="mdi:twitter" width={24} height={24} />
-                </Link>
-                <Link href="#" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
-                  <Icon icon="mdi:instagram" width={24} height={24} />
-                </Link>
-                <Link href="#" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
-                  <Icon icon="mdi:linkedin" width={24} height={24} />
-                </Link>
-                <Link href="#" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
-                  <Icon icon="mdi:youtube" width={24} height={24} />
-                </Link>
+                {selectedBusiness?.social.facebook && (
+                  <Link href={selectedBusiness.social.facebook} sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
+                    <Icon icon="mdi:facebook" width={24} height={24} />
+                  </Link>
+                )}
+                {selectedBusiness?.social.twitter && (
+                  <Link href={selectedBusiness.social.twitter} sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
+                    <Icon icon="mdi:twitter" width={24} height={24} />
+                  </Link>
+                )}
+                {selectedBusiness?.social.instagram && (
+                  <Link href={selectedBusiness.social.instagram} sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
+                    <Icon icon="mdi:instagram" width={24} height={24} />
+                  </Link>
+                )}
+                {selectedBusiness?.social.linkedin && (
+                  <Link href={selectedBusiness.social.linkedin} sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
+                    <Icon icon="mdi:linkedin" width={24} height={24} />
+                  </Link>
+                )}
+                {selectedBusiness?.social.youtube && (
+                  <Link href={selectedBusiness.social.youtube} sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}>
+                    <Icon icon="mdi:youtube" width={24} height={24} />
+                  </Link>
+                )}
               </Stack>
             </Box>
 
@@ -162,31 +175,40 @@ export function Footer() {
             </Stack>
           </Box>
 
-          {/* About */}
+          {/* Contact Info */}
           <Box>
             <Typography variant="h6" sx={{ mb: 2 }}>
-              About
+              Contact Us
             </Typography>
             <Stack spacing={1}>
-              <Link href="#" color="text.secondary" underline="hover">
-                About Us
-              </Link>
-              <Link href="#" color="text.secondary" underline="hover">
-                Contact
-              </Link>
-              <Link href="#" color="text.secondary" underline="hover">
-                Privacy Policy
-              </Link>
-              <Link href="#" color="text.secondary" underline="hover">
-                Terms of Service
-              </Link>
+              {selectedBusiness?.contact.email && (
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedBusiness.contact.email}
+                  </Typography>
+                </Box>
+              )}
+              {selectedBusiness?.contact.phone && (
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedBusiness.contact.phone}
+                  </Typography>
+                </Box>
+              )}
+              {selectedBusiness?.contact.address && (
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedBusiness.contact.address}
+                  </Typography>
+                </Box>
+              )}
             </Stack>
           </Box>
         </Box>
 
         <Box sx={{ mt: 5, pt: 3, borderTop: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.12)}` }}>
           <Typography variant="body2" color="text.secondary" textAlign="center">
-            © 2024 Mobile Gadgets Store. All rights reserved.
+            {selectedBusiness?.settings.footerText || '© 2024 Mobile Gadgets Store. All rights reserved.'}
           </Typography>
         </Box>
       </Container>

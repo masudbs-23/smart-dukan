@@ -13,7 +13,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import { getUserOrders } from 'src/_mock/_orders';
 
-import { Iconify } from 'src/components/lucide-icons';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 
@@ -103,7 +103,9 @@ export default function AccountPage() {
                   mb: 2,
                 }}
               >
-                <Iconify icon="lucide:package" width={28} sx={{ color: 'primary.main' }} />
+                <Box sx={{ color: 'primary.main', display: 'flex' }}>
+                  <Icon icon="lucide:package" width={28} />
+                </Box>
               </Box>
               <Typography variant="h4">{orders.length}</Typography>
               <Typography variant="body2" color="text.secondary">
@@ -128,7 +130,9 @@ export default function AccountPage() {
                   mb: 2,
                 }}
               >
-                <Iconify icon="lucide:check-circle" width={28} sx={{ color: 'success.main' }} />
+                <Box sx={{ color: 'success.main', display: 'flex' }}>
+                  <Icon icon="lucide:check-circle" width={28} />
+                </Box>
               </Box>
               <Typography variant="h4">
                 {orders.filter((o) => o.status === 'delivered').length}
@@ -155,7 +159,9 @@ export default function AccountPage() {
                   mb: 2,
                 }}
               >
-                <Iconify icon="lucide:truck" width={28} sx={{ color: 'warning.main' }} />
+                <Box sx={{ color: 'warning.main', display: 'flex' }}>
+                  <Icon icon="lucide:truck" width={28} />
+                </Box>
               </Box>
               <Typography variant="h4">
                 {orders.filter((o) => ['processing', 'shipped'].includes(o.status)).length}
@@ -182,7 +188,9 @@ export default function AccountPage() {
                   mb: 2,
                 }}
               >
-                <Iconify icon="lucide:heart" width={28} sx={{ color: 'error.main' }} />
+                <Box sx={{ color: 'error.main', display: 'flex' }}>
+                  <Icon icon="lucide:heart" width={28} />
+                </Box>
               </Box>
               <Typography variant="h4">0</Typography>
               <Typography variant="body2" color="text.secondary">
@@ -224,7 +232,9 @@ export default function AccountPage() {
                         justifyContent: 'center',
                       }}
                     >
-                      <Iconify icon={item.icon} width={24} sx={{ color: 'primary.main' }} />
+                      <Box sx={{ color: 'primary.main', display: 'flex' }}>
+                        <Icon icon={item.icon} width={24} />
+                      </Box>
                     </Box>
                     <Box sx={{ flex: 1 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -249,7 +259,9 @@ export default function AccountPage() {
                         {item.description}
                       </Typography>
                     </Box>
-                    <Iconify icon="lucide:chevron-right" width={20} sx={{ color: 'text.disabled' }} />
+                    <Box sx={{ color: 'text.disabled', display: 'flex' }}>
+                      <Icon icon="lucide:chevron-right" width={20} />
+                    </Box>
                   </Stack>
                 </CardContent>
               </CardActionArea>

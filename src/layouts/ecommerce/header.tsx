@@ -17,6 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
 import { useRouter } from 'src/routes/hooks';
@@ -24,6 +25,7 @@ import { useRouter } from 'src/routes/hooks';
 import { useCart } from 'src/contexts/CartContext';
 import { useWishlist } from 'src/contexts/WishlistContext';
 import { useCompare } from 'src/contexts/CompareContext';
+import { useBusiness } from 'src/contexts/BusinessContext';
 
 import { Logo } from 'src/components/logo';
 import { Icon } from '@iconify/react';
@@ -41,6 +43,7 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
   const { getCartCount } = useCart();
   const { items: wishlistItems } = useWishlist();
   const { items: compareItems } = useCompare();
+  const { selectedBusiness, openBusinessSelector } = useBusiness();
   const [searchQuery, setSearchQuery] = useState('');
   const [accountMenuAnchor, setAccountMenuAnchor] = useState<null | HTMLElement>(null);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -94,12 +97,28 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
               gap: 2,
             }}
           >
-            {/* Logo */}
+            {/* Logo & Business Name */}
             <Box
               onClick={() => router.push('/')}
-              sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 2 }}
             >
               <Logo />
+              {selectedBusiness && (
+                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                  <Typography 
+                    variant="subtitle2" 
+                    sx={{ 
+                      fontWeight: 700,
+                      color: selectedBusiness.theme.primaryColor 
+                    }}
+                  >
+                    {selectedBusiness.name}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.65rem' }}>
+                    {selectedBusiness.settings.tagline}
+                  </Typography>
+                </Box>
+              )}
             </Box>
 
             {/* Navigation - Desktop */}
@@ -305,6 +324,15 @@ export function Header({ sx, layoutQuery }: HeaderProps) {
             <Icon icon="solar:card-outline" width={20} />
           </ListItemIcon>
           <ListItemText>Payment</ListItemText>
+        </MenuItem>
+
+        <Divider />
+
+        <MenuItem onClick={() => { openBusinessSelector(); handleAccountMenuClose(); }}>
+          <ListItemIcon>
+            <Icon icon="solar:shop-2-outline" width={20} />
+          </ListItemIcon>
+          <ListItemText>Switch Business</ListItemText>
         </MenuItem>
 
         <Divider />

@@ -9,12 +9,14 @@ import { AuthProvider } from 'src/contexts/AuthContext';
 import { CartProvider } from 'src/contexts/CartContext';
 import { WishlistProvider } from 'src/contexts/WishlistContext';
 import { CompareProvider } from 'src/contexts/CompareContext';
+import { BusinessProvider } from 'src/contexts/BusinessContext';
 import { ThemeProvider } from 'src/theme/theme-provider';
 
 import { Preloader } from 'src/components/preloader';
 import { SnackbarProvider } from 'src/components/snackbar';
 import { ScrollProgress } from 'src/components/scroll-progress';
 import { PreloaderProvider } from 'src/components/preloader-context';
+import { BusinessSelectorModal } from 'src/components/business-selector-modal';
 
 // ----------------------------------------------------------------------
 
@@ -53,21 +55,24 @@ export default function App({ children }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <CartProvider>
-          <WishlistProvider>
-            <CompareProvider>
-              <ThemeProvider>
-                <PreloaderProvider>
-                  <SnackbarProvider>
-                    <Preloader isLoading={isInitialLoading} onComplete={handlePreloaderComplete} />
-                    <ScrollProgress />
-                    {children}
-                  </SnackbarProvider>
-                </PreloaderProvider>
-              </ThemeProvider>
-            </CompareProvider>
-          </WishlistProvider>
-        </CartProvider>
+        <BusinessProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <CompareProvider>
+                <ThemeProvider>
+                  <PreloaderProvider>
+                    <SnackbarProvider>
+                      <Preloader isLoading={isInitialLoading} onComplete={handlePreloaderComplete} />
+                      <ScrollProgress />
+                      <BusinessSelectorModal />
+                      {children}
+                    </SnackbarProvider>
+                  </PreloaderProvider>
+                </ThemeProvider>
+              </CompareProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </BusinessProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
