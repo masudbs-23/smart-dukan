@@ -2,16 +2,20 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import CardActionArea from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { alpha } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 
+import { useRouter } from 'src/routes/hooks';
 import { useBusiness } from 'src/contexts/BusinessContext';
 import { PRODUCTS } from 'src/_mock/_products';
 
 // ----------------------------------------------------------------------
 
 export default function VendorDashboardPage() {
+  const router = useRouter();
   const { selectedBusiness } = useBusiness();
 
   const businessProducts = PRODUCTS.filter(
@@ -84,6 +88,103 @@ export default function VendorDashboardPage() {
                 </Card>
               </Grid>
             ))}
+          </Grid>
+
+          {/* Quick Actions */}
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  transition: 'all 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: (theme) => theme.shadows[8],
+                  },
+                }}
+              >
+                <CardActionArea onClick={() => router.push('/vendor/customizer')} sx={{ height: '100%' }}>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          width: 56,
+                          height: 56,
+                          borderRadius: 2,
+                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', color: 'primary.main' }}>
+                          <Icon icon="solar:pallete-2-bold-duotone" width={32} />
+                        </Box>
+                      </Box>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="h6" sx={{ mb: 0.5 }}>
+                          Customize Business Design
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Edit header, footer, colors, and see live preview
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', color: 'text.disabled' }}>
+                        <Icon icon="solar:arrow-right-bold" width={24} />
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  transition: 'all 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: (theme) => theme.shadows[8],
+                  },
+                }}
+              >
+                <CardActionArea
+                  onClick={() => window.open(`/${selectedBusiness.slug}`, '_blank')}
+                  sx={{ height: '100%' }}
+                >
+                  <CardContent>
+                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          width: 56,
+                          height: 56,
+                          borderRadius: 2,
+                          bgcolor: (theme) => alpha(theme.palette.success.main, 0.12),
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', color: 'success.main' }}>
+                          <Icon icon="solar:eye-bold-duotone" width={32} />
+                        </Box>
+                      </Box>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography variant="h6" sx={{ mb: 0.5 }}>
+                          View Customer Site
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Preview your published storefront
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', color: 'text.disabled' }}>
+                        <Icon icon="solar:arrow-right-bold" width={24} />
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
           </Grid>
 
           {/* Business Info Card */}

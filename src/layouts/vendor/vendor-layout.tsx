@@ -35,6 +35,11 @@ const MENU_ITEMS = [
     icon: 'solar:widget-bold-duotone',
   },
   {
+    title: 'Customize Design',
+    path: '/vendor/customizer',
+    icon: 'solar:pallete-2-bold-duotone',
+  },
+  {
     title: 'Products',
     path: '/vendor/products',
     icon: 'solar:bag-4-bold-duotone',

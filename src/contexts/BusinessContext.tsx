@@ -8,6 +8,7 @@ interface BusinessContextType {
   selectedBusiness: Business | null;
   userBusinesses: Business[];
   selectBusiness: (businessId: string) => void;
+  setSelectedBusiness: (business: Business | null) => void;
   isBusinessSelectorOpen: boolean;
   openBusinessSelector: () => void;
   closeBusinessSelector: () => void;
@@ -124,6 +125,7 @@ export const BusinessProvider = ({ children }: BusinessProviderProps) => {
     selectedBusiness,
     userBusinesses,
     selectBusiness,
+    setSelectedBusiness,
     isBusinessSelectorOpen,
     openBusinessSelector,
     closeBusinessSelector,

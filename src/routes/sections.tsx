@@ -24,6 +24,7 @@ export const ComparePage = lazy(() => import('src/pages/ecommerce/compare'));
 export const AccountPage = lazy(() => import('src/pages/ecommerce/account'));
 export const OrdersPage = lazy(() => import('src/pages/ecommerce/orders'));
 export const OrderDetailsPage = lazy(() => import('src/pages/ecommerce/order-details'));
+export const BusinessStorefrontPage = lazy(() => import('src/pages/ecommerce/business-storefront'));
 
 // Profile Page
 export const ProfilePage = lazy(() => import('src/pages/profile/profile'));
@@ -32,6 +33,7 @@ export const ProfilePage = lazy(() => import('src/pages/profile/profile'));
 export const VendorLoginPage = lazy(() => import('src/pages/vendor/vendor-login'));
 export const VendorDashboardPage = lazy(() => import('src/pages/vendor/vendor-dashboard'));
 export const BusinessSettingsPage = lazy(() => import('src/pages/vendor/business-settings'));
+export const BusinessCustomizerPage = lazy(() => import('src/pages/vendor/business-customizer'));
 export const ProductsManagementPage = lazy(() => import('src/pages/vendor/products-management'));
 
 // Auth Pages
@@ -63,7 +65,7 @@ const renderFallback = () => (
 );
 
 export const routesSection: RouteObject[] = [
-  // Customer Frontend Routes
+  // Default Customer Frontend Routes (No business selected - shows default design)
   {
     path: '/',
     element: (
@@ -132,9 +134,35 @@ export const routesSection: RouteObject[] = [
     ),
     children: [
       { path: 'dashboard', element: <VendorDashboardPage /> },
+      { path: 'customizer', element: <BusinessCustomizerPage /> },
       { path: 'products', element: <ProductsManagementPage /> },
       { path: 'settings', element: <BusinessSettingsPage /> },
       { path: 'orders', element: <VendorDashboardPage /> }, // Placeholder
+    ],
+  },
+  
+  // Dynamic Business Storefront Routes (/:businessSlug)
+  // This should be before the 404 route to catch business slugs
+  {
+    path: ':businessSlug',
+    element: (
+      <EcommerceLayout>
+        <Suspense fallback={renderFallback()}>
+          <Outlet />
+        </Suspense>
+      </EcommerceLayout>
+    ),
+    children: [
+      { index: true, element: <BusinessStorefrontPage /> },
+      { path: 'shop', element: <ShopPage /> },
+      { path: 'product/:id', element: <ProductDetailsPage /> },
+      { path: 'cart', element: <CartPage /> },
+      { path: 'checkout', element: <CheckoutPage /> },
+      { path: 'wishlist', element: <WishlistPage /> },
+      { path: 'compare', element: <ComparePage /> },
+      { path: 'account', element: <AccountPage /> },
+      { path: 'account/orders', element: <OrdersPage /> },
+      { path: 'account/orders/:id', element: <OrderDetailsPage /> },
     ],
   },
   

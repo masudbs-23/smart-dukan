@@ -1,5 +1,36 @@
 // Mock data for multi-vendor businesses
 
+export interface BusinessSettings {
+  name: string;
+  logo: string;
+  description: string;
+  theme: {
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+  };
+  contact: {
+    email: string;
+    phone: string;
+    address: string;
+  };
+  social: {
+    facebook?: string;
+    twitter?: string;
+    instagram?: string;
+    linkedin?: string;
+    youtube?: string;
+  };
+  settings: {
+    tagline: string;
+    footerText: string;
+    navLinks: Array<{
+      label: string;
+      path: string;
+    }>;
+  };
+}
+
 export interface Business {
   id: string;
   name: string;
@@ -35,6 +66,10 @@ export interface Business {
       path: string;
     }>;
   };
+  // Draft and Published versions for vendor customization
+  draft?: Partial<BusinessSettings>;
+  published?: Partial<BusinessSettings>;
+  isPublished: boolean;
 }
 
 export const BUSINESSES: Business[] = [
@@ -77,6 +112,9 @@ export const BUSINESSES: Business[] = [
         { label: 'Contact', path: '/contact' },
       ],
     },
+    isPublished: false,
+    draft: undefined,
+    published: undefined,
   },
   {
     id: 'business-2',
@@ -112,6 +150,9 @@ export const BUSINESSES: Business[] = [
         { label: 'Compare', path: '/compare' },
       ],
     },
+    isPublished: false,
+    draft: undefined,
+    published: undefined,
   },
   
   // Vendor 2 - Sarah Ahmed's Businesses
@@ -150,6 +191,9 @@ export const BUSINESSES: Business[] = [
         { label: 'Support', path: '/support' },
       ],
     },
+    isPublished: false,
+    draft: undefined,
+    published: undefined,
   },
   {
     id: 'business-4',
@@ -185,6 +229,9 @@ export const BUSINESSES: Business[] = [
         { label: 'Compare', path: '/compare' },
       ],
     },
+    isPublished: false,
+    draft: undefined,
+    published: undefined,
   },
 ];
 
@@ -209,4 +256,74 @@ export const getUserBusinesses = (userEmail: string): Business[] => {
 // Helper function to get a business by id
 export const getBusinessById = (businessId: string): Business | undefined => 
   BUSINESSES.find((business) => business.id === businessId);
+
+// Helper function to get a business by slug
+export const getBusinessBySlug = (slug: string): Business | undefined => 
+  BUSINESSES.find((business) => business.slug === slug);
+
+// Helper function to get effective business settings (published > draft > default)
+export const getEffectiveBusinessSettings = (business: Business): Business => {
+  if (!business) return business;
+  
+  // If published, merge published settings with default
+  if (business.isPublished && business.published) {
+    return {
+      ...business,
+      ...business.published,
+      theme: business.published.theme || business.theme,
+      contact: business.published.contact || business.contact,
+      social: business.published.social || business.social,
+      settings: business.published.settings || business.settings,
+    };
+  }
+  
+  // Otherwise, return default
+  return business;
+};
+
+// Helper function to get draft settings for vendor dashboard
+export const getDraftBusinessSettings = (business: Business): Business => {
+  if (!business) return business;
+  
+  // If draft exists, merge draft with default
+  if (business.draft) {
+    return {
+      ...business,
+      ...business.draft,
+      theme: business.draft.theme || business.theme,
+      contact: business.draft.contact || business.contact,
+      social: business.draft.social || business.social,
+      settings: business.draft.settings || business.settings,
+    };
+  }
+  
+  // Otherwise, return default
+  return business;
+};
+
+// Helper function to update business draft (vendor dashboard)
+export const updateBusinessDraft = (businessId: string, draft: Partial<BusinessSettings>): void => {
+  const business = BUSINESSES.find((b) => b.id === businessId);
+  if (business) {
+    business.draft = { ...business.draft, ...draft };
+  }
+};
+
+// Helper function to publish business changes
+export const publishBusinessChanges = (businessId: string): void => {
+  const business = BUSINESSES.find((b) => b.id === businessId);
+  if (business && business.draft) {
+    business.published = { ...business.draft };
+    business.isPublished = true;
+    business.draft = undefined; // Clear draft after publishing
+  }
+};
+
+// Helper function to discard draft changes
+export const discardDraftChanges = (businessId: string): void => {
+  const business = BUSINESSES.find((b) => b.id === businessId);
+  if (business) {
+    business.draft = undefined;
+  }
+};
 
